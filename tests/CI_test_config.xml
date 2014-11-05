@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE build-type SYSTEM "../../../project-config.dtd">
+
+<build-type>
+  <name>AutoDeployCI</name>
+  <description>Непрерывная интеграция исходников автоматического развертывания</description>
+  <settings>
+    <parameters>
+      <param name="env.db_name" value="" />
+      <param name="env.db_password" value="" />
+      <param name="env.db_user" value="" />
+      <param name="env.server_host" value="" />
+      <param name="env.storage_connection" value="%system.agent.work.dir%\tests\tempStorage" />
+      <param name="env.storage_password" value="" />
+      <param name="env.storage_user" value="" />
+      <param name="env.v8_executable" value="%env.ProgramFiles(x86)%\1cv8\8.3.4.408\bin\1cv8.exe" />
+      <param name="oscript_path" value="%teamcity.agent.tools.dir%\oscript\oscript.exe" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_9" name="Установить хранилище storage_initial.1CD" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo off
+chcp 1251 > nul
+md "%env.storage_connection%"
+echo Копирую хранилище в %env.storage_connection%
+copy tests\storage_initial.1CD "%env.storage_connection%"\1cv8ddb.1CD]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_11" name="Подключить базу к хранилищу" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo off
+chcp 1251 > nul
+
+"%oscript_path%" Scripts\retrieve_storage.os]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_12" name="Обновить конфигурацию базы данных" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo off
+chcp 1251 > nul
+
+"%oscript_path%" Scripts\update_dbconf.os]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_18" name="Проверить версию в метаданных" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo off
+chcp 1251 > nul
+
+"%oscript_path%" tests\check_version.os -metadata 1.1.0.1]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_14" name="Установить хранилище storage_new.1CD" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo off
+chcp 1251 > nul
+echo Очищаю каталог %env.storage_connection%
+erase "%env.storage_connection%" /Q /F
+
+if NOT ERRORLEVEL == 0 GOTO bad_exit
+
+echo Копирую хранилище в %env.storage_connection%
+copy tests\storage_new.1CD "%env.storage_connection%"\1cv8ddb.1CD
+
+if NOT ERRORLEVEL == 0 GOTO bad_exit
+
+exit /B 0
+
+:bad_exit
+exit /B 1]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_15" name="Подключить базу к хранилищу (1)" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo off
+chcp 1251 > nul
+
+"%oscript_path%" Scripts\retrieve_storage.os]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_16" name="Обновить конфигурацию базы данных (1)" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo off
+chcp 1251 > nul
+
+"%oscript_path%" Scripts\update_dbconf.os]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_17" name="Обновить в режиме Предприятия" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo off
+chcp 1251 > nul
+
+"%oscript_path%" Scripts\update_enterprise.os]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_13" name="Проверить версию в метаданных и константах" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo off
+chcp 1251 > nul
+
+"%oscript_path%" tests\check_version.os 1.1.0.2]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings/>
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

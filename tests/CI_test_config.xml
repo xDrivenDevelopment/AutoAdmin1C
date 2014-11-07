@@ -80,34 +80,24 @@ exit /B 1]]></param>
           <param name="use.custom.script" value="true" />
         </parameters>
       </runner>
-      <runner id="RUNNER_15" name="Подключить базу к хранилищу (1)" type="simpleRunner">
+      <runner id="RUNNER_20" name="Запустить развертывание обновлением из хранилища" type="V8Deploy_RunDeployMetarunner">
         <parameters>
-          <param name="script.content"><![CDATA[@echo off
-chcp 1251 > nul
-
-"%oscript_path%" Scripts\retrieve_storage.os]]></param>
+          <param name="env.agent_port" value="" />
+          <param name="env.cluster_admin" value="" />
+          <param name="env.cluster_admin_password" value="" />
+          <param name="env.com_connector" value="V83.ComConnector" />
+          <param name="env.db_name" value="" />
+          <param name="env.db_password" value="" />
+          <param name="env.db_user" value="" />
+          <param name="env.lock_message" value="&quot;Выполняются регламентные работы. Пожалуйста, подождите...&quot;" />
+          <param name="env.lock_timeout_sec" value="3" />
+          <param name="env.permission_code" value="AutoDeploy" />
+          <param name="env.server_host" value="" />
+          <param name="env.storage_connection" value="%system.agent.work.dir%\tests\tempStorage" />
+          <param name="env.storage_password" value="" />
+          <param name="env.storage_user" value="" />
+          <param name="env.v8_executable" value="C:\Program Files (x86)\1cv8\8.3.4.408\bin\1cv8.exe" />
           <param name="teamcity.step.mode" value="default" />
-          <param name="use.custom.script" value="true" />
-        </parameters>
-      </runner>
-      <runner id="RUNNER_16" name="Обновить конфигурацию базы данных (1)" type="simpleRunner">
-        <parameters>
-          <param name="script.content"><![CDATA[@echo off
-chcp 1251 > nul
-
-"%oscript_path%" Scripts\update_dbconf.os]]></param>
-          <param name="teamcity.step.mode" value="default" />
-          <param name="use.custom.script" value="true" />
-        </parameters>
-      </runner>
-      <runner id="RUNNER_17" name="Обновить в режиме Предприятия" type="simpleRunner">
-        <parameters>
-          <param name="script.content"><![CDATA[@echo off
-chcp 1251 > nul
-
-"%oscript_path%" Scripts\update_enterprise.os]]></param>
-          <param name="teamcity.step.mode" value="default" />
-          <param name="use.custom.script" value="true" />
         </parameters>
       </runner>
       <runner id="RUNNER_13" name="Проверить версию в метаданных и константах" type="simpleRunner">

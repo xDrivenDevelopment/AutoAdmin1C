@@ -1,7 +1,7 @@
-п»ї//РСЃРїСЂР°РІСЊ, РЅР° РїСЂР°РІРёР»СЊРЅС‹Р№ РїСѓС‚СЊ. 
+//Исправь, на правильный путь. 
 var pathTo1C = "C:\\Program Files\\1cv82\\8.2.17.153\\bin\\1cv8.exe";
 var pathToBase = "Q:\\snegopat\\basediff";
-var pathToExecute = "G:\\repos\\git\\v83unpack\\bin\\Р’С‹РіСЂР·СѓРєР°РљРѕРЅС„РёРіСѓСЂР°С†РёРё.epf";
+var pathToExecute = "G:\\repos\\git\\v83unpack\\bin\\ВыгрзукаКонфигурации.epf";
 
 objArgs = WScript.Arguments;
 num = objArgs.length;
@@ -29,7 +29,7 @@ if ( ! objScript.FileExists(sBaseDoc))
 
 debugger;
 
-//РўРµРїРµСЂСЊ Р·Р°РїРёС€РµРј РїСѓС‚Рё Рє С„Р°Р№Р»Р°Рј РІРѕ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ С„Р°Р№Р». 
+//Теперь запишем пути к файлам во вспомогательный файл. 
 var tfolder, tfile, tname, fname, TemporaryFolder = 2;
  var file1 = objScript.GetFile(sBaseDoc);
  //var file2 = objScript.GetFile(sNewDoc);
